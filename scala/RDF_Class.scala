@@ -24,9 +24,11 @@ object ClassTypes {
 object ClassRDF extends generic.RDF:
   import class_based.ClassTypes as cz
   import generic.*
-
-  override opaque type Node <: Matchable = cz.Node
-  override opaque type URI <: Node = cz.Uri
+  
+  override opaque type rNode <: Matchable = cz.Node
+  override opaque type rURI <: rNode = cz.Uri
+  override opaque type Node <: rNode = cz.Node
+  override opaque type URI <: Node & rURI = cz.Uri
 
   given rops: generic.ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(
