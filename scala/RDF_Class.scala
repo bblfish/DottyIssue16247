@@ -39,42 +39,17 @@ object ClassRDF extends generic.RDF:
   override opaque type rURI <: rNode = cz.Uri
   override opaque type Node <: rNode = cz.Node
   override opaque type URI <: Node & rURI = cz.Uri
-  override opaque type BNode <: Node = cz.BNode
-  override opaque type Literal <: Node = cz.Lit
 
   given rops: generic.ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(
       cz.getFactory.mkUri(str)
     )
-    override def mkBNode(): RDF.BNode[R] = cz.getFactory.mkBNode()
-    override def mkLit(str: String): RDF.Literal[R] = cz.getFactory.mkLit(str)
     override protected def nodeVal(node: RDF.Node[R]): String = node.value
     override protected def auth(uri: RDF.URI[R]): Try[String] = 
       Try(java.net.URI.create(nodeVal(uri)).getAuthority())
-
-    given node2Uri: TypeTest[RDF.Node[R], RDF.URI[R]] with
-      def unapply(x: RDF.Node[R]): Option[x.type & RDF.URI[R]] =
-        x match
-          case u: (x.type & cz.Uri) => Some(u)
-          case _                    => None
-
-    given node2BN: TypeTest[RDF.Node[R], RDF.BNode[R]] with
-      def unapply(x: RDF.Node[R]): Option[x.type & RDF.BNode[R]] =
-        x match
-          case u: (x.type & cz.BNode) => Some(u)
-          case _                      => None
-
-    given node2Lit: TypeTest[RDF.Node[R], RDF.Literal[R]] with
-      def unapply(x: RDF.Node[R]): Option[x.type & RDF.Literal[R]] =
-        x match
-          case u: (x.type & cz.Lit) => Some(u)
-          case _                    => None
-
 end ClassRDF
 
 @main def run =
   import generic.Test
   val test = Test[ClassRDF.type]
   println(test.x)
-  println("folded=" + test.folded)
-  println("matched should be uri" + test.matched)
