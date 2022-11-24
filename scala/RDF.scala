@@ -12,31 +12,21 @@ trait RDF:
 
   type R = rdf.type
   
-  type rNode <: Matchable
-  type rURI <: rNode
-  type Node <: rNode
-  type URI <: Node & rURI
+  type Node <: Matchable
+  type URI <: Node
 
   given rops: ROps[R]
-
 end RDF
 
 object RDF:
-  type rNode[R <: RDF] <: Matchable = R match
-    case GetRelNode[n] => n & Matchable
-
-  type rURI[R <: RDF] <: rNode[R] = R match
-    case GetRelURI[n] => n & rNode[R]
-
-  type Node[R <: RDF] <: rNode[R] = R match
-    case GetNode[n] => n & rNode[R]
+ 
+  type Node[R <: RDF] = R match
+    case GetNode[n] => n
 
   type URI[R <: RDF] <: Node[R] = R match
-    case GetURI[u] => u & Node[R] & rURI[R]
+    case GetURI[u] => u & Node[R]
 
-  private type GetRelNode[N <: Matchable] = RDF { type rNode = N }
   private type GetNode[N] = RDF { type Node = N }
-  private type GetRelURI[U] = RDF { type rURI = U }
   private type GetURI[U] = RDF { type URI = U }
 
 end RDF

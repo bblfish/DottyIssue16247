@@ -8,10 +8,8 @@ import generic.*
 // todo, put back example using traits only to see if Java is the problem
 object TraitBasedRDF extends RDF:
   lazy val factory: rdfscala.ScalaMkNodes = rdfscala.SimpleScalaNodeFactory
-  override opaque type rNode <: Matchable = rdfscala.TstNode
-  override opaque type rURI <: rNode = rdfscala.URI
-  override opaque type Node <: rNode = rdfscala.TstNode
-  override opaque type URI <: Node & rURI = rdfscala.URI
+  override opaque type Node <: Matchable = rdfscala.TstNode
+  override opaque type URI <: Node = rdfscala.URI
 
   given rops: ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(

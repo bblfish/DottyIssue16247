@@ -10,35 +10,23 @@ object ClassTypes {
     def value: String
 
   abstract class Uri extends Node
-  abstract class BNode extends Node
-  abstract class Lit extends Node
 
   trait IFactory:
-    def mkBNode(): BNode
     def mkUri(u: String): Uri
-    def mkLit(u: String): Lit
 
   def getFactory: IFactory = AFactory
 
   private object AFactory extends IFactory:
-    var bnode: Int = 0
-    def mkBNode(): BNode =
-      bnode = bnode + 1
-      new BNode { def value = bnode.toString }
     def mkUri(u: String): Uri =
       new Uri { def value = u }
-    def mkLit(u: String): Lit =
-      new Lit { def value = u }
 }
 
 object ClassRDF extends generic.RDF:
   import class_based.ClassTypes as cz
   import generic.*
 
-  override opaque type rNode <: Matchable = cz.Node
-  override opaque type rURI <: rNode = cz.Uri
-  override opaque type Node <: rNode = cz.Node
-  override opaque type URI <: Node & rURI = cz.Uri
+  override opaque type Node <: Matchable = cz.Node
+  override opaque type URI <: Node = cz.Uri
 
   given rops: generic.ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(
