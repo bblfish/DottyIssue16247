@@ -15,7 +15,7 @@ jobs:
       - name: compile and run Class based code
         run: scala-cli --scala 3.2.1 scala/RDF_Class.scala scala/RDF.scala
       - name: compile using scala traits    
-        run: scala-cli --scala 3.2.1 scala/RDF_Traits.scala scala/RDF_UsingScalaTrait.scala scala/RDF.scala
+        run: scala-cli --scala 3.2.1 scala/RDF_Trait.scala scala/RDF.scala
   test_scala_nighly:
     runs-on: ubuntu-latest
     steps: 
@@ -29,4 +29,4 @@ jobs:
       - name: compile and run Class based code
         run: scala-cli --scala 3.3.0-RC1-bin-20221130-72c4ffd-NIGHTLY scala/RDF_Class.scala scala/RDF.scala
       - name: compile using scala traits    
-        run: scala-cli --scala 3.3.0-RC1-bin-20221130-72c4ffd-NIGHTLY scala/RDF_Traits.scala scala/RDF_UsingScalaTrait.scala scala/RDF.scala
+        run: scala-cli --scala 3.3.0-RC1-bin-20221130-72c4ffd-NIGHTLY scala/RDF_Trait.scala scala/RDF.scala
