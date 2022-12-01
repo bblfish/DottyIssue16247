@@ -2,27 +2,40 @@ package interf_based
 
 import scala.util.Try
 import scala.reflect.TypeTest
-import generic.*
 
-// here we use interfaces written in Java 
-// todo, put back example using traits only to see if Java is the problem
-object TraitBasedRDF extends RDF:
-  lazy val factory: rdfscala.ScalaMkNodes = rdfscala.SimpleScalaNodeFactory
-  override opaque type rNode <: Matchable = rdfscala.TstNode
-  override opaque type rURI <: rNode  = rdfscala.URI
-  override opaque type Node <: rNode = rdfscala.TstNode
-  override opaque type URI <: Node & rURI = rdfscala.URI
+object TraitTypes {
+  trait Node:
+     def value: String
 
-  given rops: ROps[R] with
+  trait Uri extends Node
+  
+  trait Factory:
+     def mkUri(u: String): Uri
+  
+  object aFactory extends Factory:
+     def mkUri(u: String): Uri = 
+       new Uri { def value = u }
+}
+
+object TraitBasedRDF extends generic.RDF:
+  import generic.*
+  import interf_based.TraitTypes as tz
+
+  override opaque type rNode <: Matchable = tz.Node
+  override opaque type rURI <: rNode  = tz.Uri
+  override opaque type Node <: rNode = tz.Node 
+  override opaque type URI <: Node & rURI = tz.Uri
+
+  given rops: generic.ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(
-      factory.mkUri(str)
+      tz.aFactory.mkUri(str)
     )
-    override protected def nodeVal(node: RDF.Node[R]): String = node.value()
-    override protected def auth(uri: RDF.URI[R]): Try[String] = 
+    override protected def nodeVal(node: RDF.Node[R]): String = node.value
+    override def auth(uri: RDF.URI[R]): Try[String] = 
       Try(java.net.URI.create(nodeVal(uri)).getAuthority())
  
 end TraitBasedRDF
 
 @main def run =
-  val test = Test[TraitBasedRDF.type]
+  val test = generic.Test[TraitBasedRDF.type]
   println(test.x)
