@@ -31,7 +31,7 @@ object ClassRDF extends generic.RDF:
       cz.aFactory.mkUri(str)
     )
     override protected def nodeVal(node: RDF.Node[R]): String = node.value
-    def auth(uri: RDF.URI[R]): Try[String] = 
+    def auth(uri: RDF.URI[R]): Try[String] =
       Try(java.net.URI.create(nodeVal(uri)).getAuthority())
 
 end ClassRDF
