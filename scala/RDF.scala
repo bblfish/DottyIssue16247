@@ -43,12 +43,8 @@ end RDF
 trait ROps[R <: RDF]:
   def mkUri(str: String): Try[RDF.URI[R]]
 
-  // def mkRelURI(str: String): Try[RDF.rURI[R]]
   protected def nodeVal(node: RDF.Node[R]): String
   def auth(uri: RDF.URI[R]): Try[String]
-
-// extension (uri: URI[R])
-//   def authority: Try[String] = auth(uri)
 
 end ROps
 

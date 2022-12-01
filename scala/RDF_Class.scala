@@ -9,12 +9,8 @@ object ClassTypes {
 
   abstract class Uri extends Node
 
-  trait Factory:
-    def mkUri(u: String): Uri
-
-  object aFactory extends Factory:
-    def mkUri(u: String): Uri =
-      new Uri { def value = u }
+  def mkUri(u: String): Uri =
+    new Uri { def value = u }
 }
 
 object ClassRDF extends generic.RDF:
@@ -28,7 +24,7 @@ object ClassRDF extends generic.RDF:
 
   given rops: generic.ROps[R] with
     override def mkUri(str: String): Try[RDF.URI[R]] = Try(
-      cz.aFactory.mkUri(str)
+      cz.mkUri(str)
     )
     override protected def nodeVal(node: RDF.Node[R]): String = node.value
     override def auth(uri: RDF.URI[R]): Try[String] =
