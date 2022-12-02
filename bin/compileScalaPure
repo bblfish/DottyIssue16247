@@ -1,6 +1,0 @@
-# We have no trouble compiling the RDF_Class alone (no need for java classes either)
-
-$SCALA_HOME/bin/scalac -d build -release 17 -explain scala/RDF.scala scala/RDF_Class.scala 
-
-# We can then run the test
-$SCALA_HOME/bin/scala -classpath build class_based.run
