@@ -1,3 +1,2 @@
-find java -name "*.class" | xargs rm
 find build -name "*.class" | xargs rm
 find build -name "*.tasty" | xargs rm
