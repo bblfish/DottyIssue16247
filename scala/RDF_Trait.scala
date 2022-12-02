@@ -7,10 +7,10 @@ object TraitTypes {
   trait Node:
     def value: String
 
-  trait Uri extends Node
+  class Uri(u: String) extends Node:
+    def value = u
 
-  def mkUri(u: String): Uri =
-    new Uri { def value = u }
+  def mkUri(u: String): Uri = new Uri(u)
 }
 
 object TraitRDF extends generic.RDF:
