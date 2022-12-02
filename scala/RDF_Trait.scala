@@ -4,7 +4,7 @@ import scala.util.Try
 import scala.reflect.TypeTest
 
 object TraitTypes {
-  trait Node:
+  abstract class Node:
     def value: String
 
   class Uri(u: String) extends Node:
