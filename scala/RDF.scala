@@ -2,10 +2,6 @@ package generic
 
 import scala.util.Try
 import RDF.URI
-import scala.reflect.TypeTest
-
-// here is the structural code that which is then implemented in
-// a number of ways...
 
 trait RDF:
   rdf =>
@@ -13,7 +9,7 @@ trait RDF:
   type R = rdf.type
   type rNode <: Matchable
   type rURI <: rNode
-  type Node <: rNode
+  type Node <: Matchable
   type URI <: Node & rURI
 
   given rops: ROps[R]
@@ -42,15 +38,41 @@ end RDF
 
 trait ROps[R <: RDF]:
   def mkUri(str: String): Try[RDF.URI[R]]
-
-  protected def nodeVal(node: RDF.Node[R]): String
   def auth(uri: RDF.URI[R]): Try[String]
-
-end ROps
 
 class Test[R <: RDF](using rops: ROps[R]):
   import rops.given
   val uriT: Try[RDF.URI[R]] = rops.mkUri("https://bblfish.net/#i")
   val x: String = "uri authority=" + uriT.map(u => rops.auth(u))
 
-end Test
+
+object TraitTypes:
+  trait Node:
+    def value: String
+
+  trait Uri extends Node
+
+  def mkUri(u: String): Uri =
+    new Uri { def value = u }
+
+
+object TraitRDF extends generic.RDF:
+  import TraitTypes as tz
+
+  override opaque type rNode <: Matchable = tz.Node
+  override opaque type rURI <: rNode = tz.Uri
+  override opaque type Node <: rNode = tz.Node
+  override opaque type URI <: Node & rURI = tz.Uri
+
+  given rops: generic.ROps[R] with
+    override def mkUri(str: String): Try[RDF.URI[R]] = Try(
+      tz.mkUri(str)
+    )
+    override def auth(uri: RDF.URI[R]): Try[String] =
+      Try(java.net.URI.create(uri.value).getAuthority())
+
+end TraitRDF
+
+@main def run =
+  val test = generic.Test[TraitRDF.type]
+  println(test.x)
