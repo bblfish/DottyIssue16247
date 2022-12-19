@@ -29,10 +29,10 @@ object TraitTypes:
   trait Node:
     def value: String
 
-  trait Uri extends Node
+  class Uri(val value: String) extends Node
 
   def mkUri(u: String): Uri =
-    new Uri { def value = u }
+    new Uri(u)
 
 
 object TraitRDF extends RDF:
