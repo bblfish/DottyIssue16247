@@ -12,7 +12,7 @@ jobs:
           java-version: 17
       - uses: coursier/cache-action@v6.3
       - uses: VirtusLab/scala-cli-setup@v0.1
-      - name: compile scala 2.3.1    
+      - name: compile scala 3.2.1    
         run: scala-cli --scala 3.2.1 scala/RDF.scala 
   test_scala_nighly:
     runs-on: ubuntu-latest

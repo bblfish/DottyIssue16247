@@ -1,4 +1,3 @@
-//> using options "-deprecation", "-feature", "-explain"
 import scala.util.Try
 
 trait RDF:
