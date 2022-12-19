@@ -3,4 +3,4 @@
 $SCALA_HOME/bin/scalac -d build -release 17 -explain scala/RDF.scala 
 
 # and so this does not run
-$SCALA_HOME/bin/scala -classpath build interf_based.run
+$SCALA_HOME/bin/scala -classpath build run
