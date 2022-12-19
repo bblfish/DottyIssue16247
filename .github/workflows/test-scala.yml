@@ -12,9 +12,9 @@ jobs:
           java-version: 17
       - uses: coursier/cache-action@v6.3
       - uses: VirtusLab/scala-cli-setup@v0.1
-      - name: compile using scala traits    
-        run: scala-cli --scala 3.2.1 scala/RDF_Trait.scala scala/RDF.scala
-  test_scala_nighly:
+      - name: compile scala 2.3.1    
+        run: scala-cli --scala 3.2.1 scala/RDF.scala 
+ test_scala_nighly:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v3
@@ -24,5 +24,5 @@ jobs:
           java-version: 17
       - uses: coursier/cache-action@v6.3
       - uses: VirtusLab/scala-cli-setup@v0.1
-      - name: compile using scala traits    
-        run: scala-cli --scala 3.3.0-RC1-bin-20221130-72c4ffd-NIGHTLY scala/RDF_Trait.scala scala/RDF.scala
+      - name: compile scala nightly
+        run: scala-cli --scala 3.nightly scala/RDF.scala
